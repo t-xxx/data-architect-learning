@@ -1,8 +1,8 @@
 name: PreMerge Check
 on: 
-  pull-request:
-    branches: 
-      - "main"
+  pull_request:
+    branches:
+      - main
 
 jobs:
   setup&validation:
