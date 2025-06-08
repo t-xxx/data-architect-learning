@@ -1,11 +1,19 @@
 name: PreMerge Check
-on:
-  pull-request:
-    branches: [ main ]
+on: pull-request
+  branches: [ main ]
+
 jobs:
   setup&validation:
     runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
     steps:
+      - name: Check should run
+        run: |
+          if [[ "${{ startsWith(github.head_ref, 'feature/')}}" == "true"]];
+            then echo "should_run=true" >> $GITHUB_OUTPUT
+          else echo "should_run=false" >> $GITHUB_OUTPUT
+          fi
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Hello World
