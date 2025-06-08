@@ -1,8 +1,40 @@
-name: HelloWorld
-on: push
+name: PreMerge Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
 jobs:
-  hello-world:
+  setup_validation:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+    steps:
+      - name: Check should run
+        id: check
+        run: |
+          if [[ "${GITHUB_HEAD_REF}" == feature/* ]]; then
+            echo "should_run=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_run=false" >> $GITHUB_OUTPUT
+          fi
+
+  build_and_test:
+    needs: setup_validation
+    if: needs.setup_validation.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Hello World
-        run: echo "Hello World" 
+        run: echo "Hello World"
