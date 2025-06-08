@@ -1,6 +1,7 @@
 name: PreMerge Check
-on: pull-request
-  branches: [ main ]
+on: 
+  pull-request:
+    branches: "main"
 
 jobs:
   setup&validation:
