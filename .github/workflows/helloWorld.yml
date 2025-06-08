@@ -3,6 +3,8 @@ on:
   pull_request:
     branches:
       - mainjobs:
+
+jobs:
   setup_validation:
     runs-on: ubuntu-latest
     outputs:
