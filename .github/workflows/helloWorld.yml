@@ -20,6 +20,11 @@ jobs:
             echo "should_run=false" >> $GITHUB_OUTPUT
           fi
 
+  build_and_test:
+    needs: setup_validation
+    if: needs.setup_validation.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
