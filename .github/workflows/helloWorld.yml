@@ -1,8 +1,9 @@
 name: PreMerge Check
-on: 
+
+on:
   pull_request:
     branches:
-      - mainjobs:
+      - main
 
 jobs:
   setup_validation:
@@ -13,7 +14,7 @@ jobs:
       - name: Check should run
         id: check
         run: |
-          if [[ "${{ startsWith(github.head_ref, 'feature/') }}" == "true" ]]; then
+          if [[ "${GITHUB_HEAD_REF}" == feature/* ]]; then
             echo "should_run=true" >> $GITHUB_OUTPUT
           else
             echo "should_run=false" >> $GITHUB_OUTPUT
